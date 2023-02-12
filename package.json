@@ -1,0 +1,51 @@
+{
+  "name": "nuxt-forestadmin",
+  "version": "1.0.0",
+  "description": "Nuxt module for Forest Admin",
+  "repository": "https://github.com/tobiasdiez/nuxt-forestadmin",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.ts",
+      "import": "./dist/module.mjs",
+      "require": "./dist/module.cjs"
+    }
+  },
+  "main": "./dist/module.cjs",
+  "types": "./dist/types.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "nuxt-module-build --stub && nuxi prepare playground",
+    "prepack": "nuxt-module-build",
+    "build": "pnpm prepack",
+    "dev": "nuxi dev playground",
+    "dev:build": "nuxi build playground",
+    "lint": "pnpm lint:eslint && pnpm lint:prettier",
+    "lint:eslint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore --report-unused-disable-directives .",
+    "lint:prettier": "prettier --check --ignore-path .gitignore . '!pnpm-lock.yaml'",
+    "test": "vitest run",
+    "test:watch": "vitest watch"
+  },
+  "dependencies": {
+    "@nuxt/kit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "^0.2.1",
+    "@nuxt/schema": "^3.2.0",
+    "@nuxt/test-utils": "^3.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/parser": "^5.50.0",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "nuxt": "^3.2.0",
+    "prettier": "^2.8.3",
+    "typescript": "^4.9.5",
+    "vitest": "^0.28.4",
+    "vue-eslint-parser": "^9.1.0"
+  },
+  "packageManager": "pnpm@7.26.3"
+}
