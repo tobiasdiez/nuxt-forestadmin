@@ -24,24 +24,51 @@ yarn add nuxt-forestadmin
 pnpm add nuxt-forestadmin
 ```
 
+You also need to install at least one of the [Forest Admin data source packages](https://docs.forestadmin.com/developer-guide-agents-nodejs/data-sources/connection).
+
 ## Usage
 
-1. Add the module in `nuxt.config.ts`:
+1. Add the module in `nuxt.config.ts` and specify the datasource:
 
    ```ts
+   // Replace with a different datasource if needed
+   import { createSqlDataSource } from '@forestadmin/datasource-sql'
    export default defineNuxtConfig({
       modules: [
          'nuxt-forestadmin'
       ],
       forestadmin: {
-         // Optional: config
+         dataSource: {
+            factory: createSqlDataSource("<DATABASE URL>")
+         }
       }
    })
    ̀ ``
 
-   ```
+2. Specify the [authSecret](https://docs.forestadmin.com/developer-guide-agents-nodejs/getting-started/install/create-your-agent#authsecret-string-no-default) and [envSecret](https://docs.forestadmin.com/developer-guide-agents-nodejs/getting-started/install/create-your-agent#envsecret-string-no-default) that you obtained during the onboarding procedure. You have two options to set them:
 
-2. TODO
+   - Via the [Runtime Config](https://nuxt.com/docs/guide/going-further/runtime-config#runtime-config) inside `nuxt.config.ts`:
+      
+      ```ts
+      runtimeConfig: {
+         forestadmin: {
+            authSecret: "...",
+            envSecret: "..."
+         }
+      }
+      ̀ ``
+
+      These can then be overwritten by the environment variables `NUXT_FORESTADMIN_AUTHSECRET` and `NUXT_FORESTADMIN_ENVSECRET` at runtime.
+   - Via the `forestadmin` key inside the `nuxt.config.ts` at build-time: 
+      
+      ```ts
+      forestadmin: {
+         authSecret: "...",
+         envSecret: "..."
+      }
+      ```
+
+3. TODO
 
 3. That's it! You can now use Forest Admin in your Nuxt app ✨
 
