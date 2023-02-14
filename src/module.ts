@@ -3,14 +3,15 @@ import Router from '@koa/router'
 import { addDevServerHandler, defineNuxtModule, useLogger } from '@nuxt/kit'
 import Koa from 'koa'
 import { defineEventHandler, EventHandler } from 'h3'
-import { DataSourceOptions } from '@forestadmin/datasource-customizer';
+import { DataSourceOptions } from '@forestadmin/datasource-customizer'
 import { DataSourceFactory } from '@forestadmin/datasource-toolkit'
+import { sendError } from 'h3'
 
 type KoaHandler = ReturnType<Koa['callback']>
 
 export interface ModuleOptions {
   dataSource: {
-    factory: DataSourceFactory,
+    factory: DataSourceFactory
     options?: DataSourceOptions
   }
   authSecret?: string
@@ -20,12 +21,15 @@ export interface ModuleOptions {
 
 declare module '@nuxt/schema' {
   export interface RuntimeConfig {
-      forestAdmin?: Partial<ModuleOptions>
+    forestAdmin?: Partial<ModuleOptions>
   }
 }
 type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] }
 
-type Options = WithRequired<WithRequired<ModuleOptions, 'authSecret'>, 'envSecret'>
+type Options = WithRequired<
+  WithRequired<ModuleOptions, 'authSecret'>,
+  'envSecret'
+>
 
 const logger = useLogger('forestadmin')
 async function startForestAdminServer(options: Options, isDev: boolean) {
@@ -60,12 +64,10 @@ async function startForestAdminServer(options: Options, isDev: boolean) {
   return Promise.all([
     agent.start().then(() => logger.debug('Agent started')),
     handlerPromise,
-  ])
-    .then(([, handler]) => {
-      logger.debug('Agent and handler started')
-      return handler
-    })
-    .catch((err) => logger.error(err))
+  ]).then(([, handler]) => {
+    logger.debug('Agent and handler started')
+    return handler
+  })
 }
 
 export default defineNuxtModule<ModuleOptions>({
@@ -79,23 +81,29 @@ export default defineNuxtModule<ModuleOptions>({
       ...nuxt.options.runtimeConfig.forestAdmin,
     }
     if (!options.authSecret || !options.envSecret) {
-      logger.warn('Forest Admin is not configured. Please set the authSecret and envSecret.')
+      logger.warn(
+        'Forest Admin is not configured. Please set the authSecret and envSecret.'
+      )
       return
     }
-    const promiseHandler = new Promise<EventHandler<unknown>>(
-      (resolve, reject) => {
-        nuxt.hook('listen', async () => {
+    const promiseHandler = new Promise<EventHandler<unknown>>((resolve) => {
+      nuxt.hook('listen', async () => {
+        try {
           const handler = await startForestAdminServer(
-            options as Options, nuxt.options.dev
+            options as Options,
+            nuxt.options.dev
           )
-          if (handler) {
-            resolve(handler)
-          } else {
-            reject(new Error('Failed to start forest admin server'))
-          }
-        })
-      }
-    )
+          resolve(handler)
+        } catch (error) {
+          logger.error(error)
+          resolve(
+            defineEventHandler((event) => {
+              sendError(event, error as Error, nuxt.options.dev)
+            })
+          )
+        }
+      })
+    })
     /* nuxt.options.runtimeConfig.forestAdmin = {
       handler: promiseHandler,
     } */
@@ -104,6 +112,17 @@ export default defineNuxtModule<ModuleOptions>({
       handler: defineEventHandler(async (event) => {
         return (await promiseHandler)(event)
       }),
+    })
+
+    // Without this, vite would handle cors in dev mode, which would lead to different behavior in dev and prod
+    nuxt.hook('vite:extendConfig', (config) => {
+      config.server = config.server || {}
+      config.server.cors = config.server.cors || {}
+      if (typeof config.server.cors !== 'boolean') {
+      config.server.cors.preflightContinue = true
+      } else {
+        logger.error("Cannot set preflightContinue in cors vite config, do this manually")
+      }
     })
   },
 })
