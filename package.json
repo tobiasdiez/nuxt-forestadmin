@@ -30,27 +30,27 @@
     "test:watch": "vitest watch"
   },
   "dependencies": {
-    "@forestadmin/agent": "^1.8.0",
-    "@forestadmin/datasource-customizer": "^1.5.11",
-    "@nuxt/kit": "^3.2.0",
+    "@forestadmin/agent": "^1.8.3",
+    "@forestadmin/datasource-customizer": "^1.5.12",
+    "@nuxt/kit": "^3.2.3",
     "@types/koa": "^2.13.5",
     "@types/koa__router": "^12.0.0"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.2.1",
-    "@nuxt/schema": "^3.2.0",
-    "@nuxt/test-utils": "^3.2.0",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
-    "@typescript-eslint/parser": "^5.50.0",
-    "eslint": "^8.34.0",
+    "@nuxt/schema": "^3.2.3",
+    "@nuxt/test-utils": "^3.2.3",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
-    "nuxt": "^3.2.0",
-    "prettier": "^2.8.3",
+    "nuxt": "^3.2.3",
+    "prettier": "^2.8.4",
     "superagent": "^8.0.9",
     "typescript": "^4.9.5",
-    "vitest": "^0.28.4",
+    "vitest": "^0.29.2",
     "vue-eslint-parser": "^9.1.0"
   },
-  "packageManager": "pnpm@7.26.3"
+  "packageManager": "pnpm@7.28.0"
 }
