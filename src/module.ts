@@ -38,7 +38,19 @@ async function startForestAdminServer(options: Options, isDev: boolean) {
     ...options,
     isProduction: !isDev,
     prefix: '_admin/forest',
-    // loggerLevel: 'Debug',
+    loggerLevel: 'Debug',
+    logger: (level, message) => {
+      switch (level) {
+        case 'Warn':
+          logger.warn(message)
+          break
+        case 'Error':
+          logger.error(message)
+          break
+        default:
+          logger.debug(message)
+      }
+    },
   }).addDataSource(options.dataSource.factory, options.dataSource.options)
 
   const handlerPromise = new Promise<KoaHandler>((resolve) => {
