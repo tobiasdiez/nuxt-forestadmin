@@ -5,8 +5,8 @@ import {
   resolveAlias,
   useLogger,
 } from '@nuxt/kit'
-import { DataSourceOptions } from '@forestadmin/datasource-customizer'
-import { DataSourceFactory } from '@forestadmin/datasource-toolkit'
+import type { DataSourceOptions } from '@forestadmin/datasource-customizer'
+import type { DataSourceFactory } from '@forestadmin/datasource-toolkit'
 
 export interface ModuleOptions {
   dataSource?: string
