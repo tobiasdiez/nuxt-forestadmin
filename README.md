@@ -45,30 +45,40 @@ You also need to install at least one of the [Forest Admin data source packages]
    })
    ̀ ``
 
+   ```
+
 2. Specify the [authSecret](https://docs.forestadmin.com/developer-guide-agents-nodejs/getting-started/install/create-your-agent#authsecret-string-no-default) and [envSecret](https://docs.forestadmin.com/developer-guide-agents-nodejs/getting-started/install/create-your-agent#envsecret-string-no-default) that you obtained during the onboarding procedure. You have two options to set them:
 
    - Via the [Runtime Config](https://nuxt.com/docs/guide/going-further/runtime-config#runtime-config) inside `nuxt.config.ts`:
-      
-      ```ts
-      runtimeConfig: {
-         forestadmin: {
-            authSecret: "...",
-            envSecret: "..."
-         }
-      }
-      ̀ ``
 
-      These can then be overwritten by the environment variables `NUXT_FORESTADMIN_AUTHSECRET` and `NUXT_FORESTADMIN_ENVSECRET` at runtime.
-   - Via the `forestadmin` key inside the `nuxt.config.ts` at build-time: 
-      
-      ```ts
-      forestadmin: {
-         authSecret: "...",
-         envSecret: "..."
-      }
-      ```
+     ```ts
+     runtimeConfig: {
+        forestadmin: {
+           authSecret: "...",
+           envSecret: "..."
+        }
+     }
+     ̀ ``
 
-3. TODO
+     These can then be overwritten by the environment variables `NUXT_FORESTADMIN_AUTHSECRET` and `NUXT_FORESTADMIN_ENVSECRET` at runtime.
+     ```
+
+   - Via the `forestadmin` key inside the `nuxt.config.ts` at build-time:
+     ```ts
+     forestadmin: {
+        authSecret: "...",
+        envSecret: "..."
+     }
+     ```
+
+3. TODO export default { factory: createTypicode } satisfies ForestAdminDataSource
+
+```ts
+{
+    factory: DataSourceFactory
+    options?: DataSourceOptions
+}
+```
 
 3. That's it! You can now use Forest Admin in your Nuxt app ✨
 

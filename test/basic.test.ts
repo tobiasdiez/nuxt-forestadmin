@@ -4,12 +4,20 @@ import { setup, $fetch } from '@nuxt/test-utils'
 
 describe('ssr', async () => {
   await setup({
+    //dev: true,
     rootDir: fileURLToPath(new URL('./fixtures/basic', import.meta.url)),
+    server: true,
   })
 
-  it('renders the index page', async () => {
-    // Get response to a server-rendered page with `$fetch`.
-    const html = await $fetch('/')
-    expect(html).toContain('<div>basic</div>')
+  it('root returns agent status', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const response = await $fetch('/_admin')
+    expect(response).toStrictEqual({ error: null, message: 'Agent is running' })
+  })
+
+  it('root/forest returns agent status', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const response = await $fetch('/_admin/forest')
+    expect(response).toStrictEqual({ error: null, message: 'Agent is running' })
   })
 })
