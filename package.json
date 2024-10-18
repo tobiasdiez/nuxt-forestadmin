@@ -42,7 +42,7 @@
     "@nuxt/test-utils": "^3.2.3",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
-    "eslint": "^8.35.0",
+    "eslint": "^9.13.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-unused-imports": "^2.0.0",
     "nuxt": "^3.2.3",
